@@ -1,0 +1,129 @@
+<!--
+@license
+Copyright 2016 The Advanced REST client authors <arc@mulesoft.com>
+Licensed under the Apache License, Version 2.0 (the "License"); you may not
+use this file except in compliance with the License. You may obtain a copy of
+the License at
+http://www.apache.org/licenses/LICENSE-2.0
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+License for the specific language governing permissions and limitations under
+the License.
+-->
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../paper-input/paper-input.html">
+<link rel="import" href="../iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../paper-button/paper-button.html">
+<!--
+An element that tests user input agains provided host rules.
+
+The host rules is a model received from `host-rules-editor`. However, it can be
+any object that contains `from` and `to` properties.
+
+It evaluates user entered URL against provided rules and displays the result of
+the computation.
+
+@group UI Elements
+@element host-rules-tester
+@demo demo/index.html
+-->
+<dom-module id="host-rules-tester">
+  <template>
+    <style>
+      :host {
+        display: block;
+        @apply --host-rules-tester;
+      }
+
+      .inputs {
+        @apply --layout-horizontal;
+      }
+
+      .url-input {
+        @apply --layout-flex;
+      }
+
+      output {
+        display: block;
+        min-height: 24px;
+        @apply --arc-font-code1;
+      }
+    </style>
+    <div class="inputs">
+      <paper-input class="url-input" label="Enter URL to test" value="{{url}}" on-keydown="_keyDown"></paper-input>
+      <paper-button on-tap="testUrl" title="Tap to evaluate">Test</paper-button>
+    </div>
+    <output>[[result]]</output>
+  </template>
+  <script>
+    Polymer({
+      is: 'host-rules-tester',
+
+      properties: {
+        /**
+         * Provided by the user URL
+         */
+        url: String,
+        /**
+         * Evaludated result of parsing the URL against rules
+         */
+        result: {
+          type: String,
+          readOnly: true
+        },
+        /**
+         * List of rules to use to evaluate the URL
+         */
+        rules: Array
+      },
+
+      testUrl: function() {
+        if (!this.rules || !this.rules.length) {
+          return this._setResult('Define rules first.');
+        }
+        if (!this.url) {
+          return this._setResult('Define the URL first.');
+        }
+
+        var result = this._evaluate();
+        this._setResult(result);
+      },
+
+      _evaluate: function() {
+        var url = this.url;
+        var rules = this.rules;
+        for (let i = 0; i < rules.length; i++) {
+          let rule = rules[i];
+          let result = this._evaluateAgainst(url, rule);
+          if (result) {
+            return result;
+          }
+        }
+        return url;
+      },
+
+      _evaluateAgainst: function(url, rule) {
+        if (!rule.from) {
+          return;
+        }
+        var re = this._createRuleRe(rule.from);
+        if (!re.test(url)) {
+          return;
+        }
+        return url.replace(re, rule.to);
+      },
+
+      _createRuleRe: function(input) {
+        input = input.replace(/\*/g, '(.*)');
+        return new RegExp(input, 'gi');
+      },
+
+      _keyDown: function(e) {
+        if (e.key === 'Enter') {
+          this.testUrl();
+        }
+      }
+    });
+  </script>
+</dom-module>
