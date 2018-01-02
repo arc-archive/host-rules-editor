@@ -59,6 +59,7 @@ Custom property | Description | Default
 `--host-rules-editor-item-input` | Mixin applied to the rules inputs | `{}`
 `--host-rules-editor-item-comment-input` | Mixin applied to the comment textarea input | `{}`
 `--host-rules-editor-item-comment-input-narrow` | Mixin applied to the comment textarea input in narrow view | `{}`
+`--host-rules-editor-tutorial-toast` | Mixin applied to the tutorial toast element | `{}`
 
 
 
