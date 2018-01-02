@@ -87,6 +87,7 @@ Custom property | Description | Default
 `--host-rules-editor-item-input` | Mixin applied to the rules inputs | `{}`
 `--host-rules-editor-item-comment-input` | Mixin applied to the comment textarea input | `{}`
 `--host-rules-editor-item-comment-input-narrow` | Mixin applied to the comment textarea input in narrow view | `{}`
+`--host-rules-editor-tutorial-toast` | Mixin applied to the tutorial toast element | `{}`
 
 @group UI Elements
 @element host-rules-editor
@@ -178,6 +179,11 @@ Custom property | Description | Default
       padding: 8px;
       background-color: var(--host-rules-editor-tester-background-color, #FFE0B2);
       @apply --host-rules-editor-tester-background;
+    }
+
+    tutorial-toast {
+      position: absolute;
+      @apply --host-rules-editor-tutorial-toast;
     }
     </style>
     <div class="header">
