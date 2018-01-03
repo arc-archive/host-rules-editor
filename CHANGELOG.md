@@ -1,3 +1,9 @@
+<a name="0.1.3"></a>
+## [0.1.3](https://github.com/advanced-rest-client/host-rules-editor/compare/0.1.2...0.1.3) (2018-01-03)
+
+
+
+
 <a name="0.1.2"></a>
 ## [0.1.2](https://github.com/advanced-rest-client/host-rules-editor/compare/0.1.1...0.1.2) (2018-01-02)
 
