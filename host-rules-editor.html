@@ -1,6 +1,6 @@
 <!--
 @license
-Copyright 2016 The Advanced REST client authors <arc@mulesoft.com>
+Copyright 2018 The Advanced REST client authors <arc@mulesoft.com>
 Licensed under the Apache License, Version 2.0 (the "License"); you may not
 use this file except in compliance with the License. You may obtain a copy of
 the License at
@@ -11,17 +11,16 @@ WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
 License for the specific language governing permissions and limitations under
 the License.
 -->
-<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../polymer/polymer-element.html">
 <link rel="import" href="../iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../paper-button/paper-button.html">
 <link rel="import" href="../arc-icons/arc-icons.html">
 <link rel="import" href="../paper-menu-button/paper-menu-button.html">
 <link rel="import" href="../paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../paper-listbox/paper-listbox.html">
-<link rel="import" href="../paper-item/paper-item.html">
+<link rel="import" href="../paper-item/paper-icon-item.html">
 <link rel="import" href="../paper-progress/paper-progress.html">
 <link rel="import" href="../paper-toast/paper-toast.html">
-<link rel="import" href="../openable-panel-behavior/openable-panel-behavior.html">
 <link rel="import" href="../paper-dialog/paper-dialog.html">
 <link rel="import" href="../tutorial-toast/tutorial-toast.html">
 <link rel="import" href="../paper-fab/paper-fab.html">
@@ -29,70 +28,7 @@ the License.
 <link rel="import" href="../iron-collapse/iron-collapse.html">
 <link rel="import" href="host-rules-editor-item.html">
 <link rel="import" href="host-rules-tester.html">
-<!--
-An element to render host rules mapping editor.
 
-Host rules mapping allow ARC to redirect connection from one URI to another
-without changinh the `host` header value. This element allows to enter mapping
-rules and to test them agains arbitrary URL.
-
-NOTE: This element does not provide data storing interface. Instead of operating
-on a data store it sends custom events that should be handled by the hosting
-application. Example inferface is included in `arc-models/host-rules-model` element.
-
-NOTE: This element works with `arc-data-export` element to export data to a file.
-You can use other way to handle `export-user-data` custom event to export host
-rules data.
-
-### Example
-```
-<arc-data-export></arc-data-export>
-<host-rules-model></host-rules-model>
-<host-rules-editor></host-rules-editor>
-```
-
-### Data model
-
-The `items` property accepts an array of the following objects:
-
-``` javascript
-{
-  from: String, // The from rule (may contain asterisks)
-  to: String, // replacement value
-  enabled: Boolean, // if false the rule is ignored
-  comment: String // optional rule description
-}
-```
-
-### Narrow view
-
-The element does not recognizes screen size to render mobile like view. To render
-narrow view (that fit mobile screen or narrow drawer etc) set `narrow` attribute
-on the element
-
-```html
-<host-rules-editor narrow></host-rules-editor>
-```
-
-### Styling
-`<host-rules-editor>` provides the following custom properties and mixins for styling:
-
-Custom property | Description | Default
-----------------|-------------|----------
-`--host-rules-editor` | Mixin applied to the element | `{}`
-`--inline-fom-action-icon-color` | Color of the icons in the form editor | `rgba(0, 0, 0, 0.74)`
-`--inline-fom-action-icon-color-hover` | Color of the icons in the form editor when hovering | `--accent-color` or `rgba(0, 0, 0, 0.74)`
-`--host-rules-editor-loader` | Mixin applied to the paper-progress element when loading rules | `{}`
-`--host-rules-editor-empty-screen` | Mixin applied to the empty screen message | `{}`
-`--host-rules-editor-item-input` | Mixin applied to the rules inputs | `{}`
-`--host-rules-editor-item-comment-input` | Mixin applied to the comment textarea input | `{}`
-`--host-rules-editor-item-comment-input-narrow` | Mixin applied to the comment textarea input in narrow view | `{}`
-`--host-rules-editor-tutorial-toast` | Mixin applied to the tutorial toast element | `{}`
-
-@group UI Elements
-@element host-rules-editor
-@demo demo/index.html
--->
 <dom-module id="host-rules-editor">
   <template>
     <style>
@@ -158,26 +94,14 @@ Custom property | Description | Default
       @apply --host-rules-editor-empty-screen;
     }
 
-    .caption {
-      @apply --arc-font-caption;
-    }
-
-    p.explanation code {
-      display: block;
-    }
-
     host-rules-editor-item {
       padding: 0 16px;
-    }
-
-    *[hidden] {
-      display: none !important;
     }
 
     host-rules-tester {
       margin: 8px 16px;
       padding: 8px;
-      background-color: var(--host-rules-editor-tester-background-color, #FFE0B2);
+      background-color: var(--host-rules-editor-tester-background-color, #E8F5E9);
       @apply --host-rules-editor-tester-background;
     }
 
@@ -189,16 +113,14 @@ Custom property | Description | Default
     <div class="header">
       <h2>Hosts rules mapping</h2>
       <div class="header-actions">
-        <paper-button hidden$="[[dataUnavailable]]" raised on-tap="toggleRulesTester">Test rules</paper-button>
+        <paper-button hidden$="[[dataUnavailable]]" raised on-click="toggleRulesTester">Test rules</paper-button>
         <paper-menu-button dynamic-align id="mainMenu">
-          <paper-icon-button icon="arc:more-vert" class="dropdown-trigger"></paper-icon-button>
-          <paper-listbox class="dropdown-content" id="mainMenuOptions">
-            <paper-item on-tap="_onExportAll" data-action="export-all">
-              Export all
-            </paper-item>
-            <paper-item on-tap="_onLearnMore" data-action="learn-more">
-              Learn more abour host rules
-            </paper-item>
+          <paper-icon-button icon="arc:more-vert" slot="dropdown-trigger"></paper-icon-button>
+          <paper-listbox slot="dropdown-content" id="mainMenuOptions">
+            <paper-icon-item on-click="_onExportAll" data-action="export-all"><iron-icon icon="arc:archive" slot="item-icon"></iron-icon>Export all to file</paper-icon-item>
+            <paper-icon-item on-click="_onExportAllDrive" data-action="export-drive"><iron-icon icon="arc:drive-color" slot="item-icon"></iron-icon>Export all to Google Drive</paper-icon-item>
+            <paper-icon-item on-click="_deleteAll" data-action="export-drive"><iron-icon icon="arc:clear" slot="item-icon"></iron-icon>Delete all</paper-icon-item>
+            <paper-icon-item on-click="_onLearnMore" data-action="learn-more"><iron-icon icon="arc:info-outline" slot="item-icon"></iron-icon>Learn more about host rules</paper-icon-item>
           </paper-listbox>
         </paper-menu-button>
       </div>
@@ -212,14 +134,7 @@ Custom property | Description | Default
     <template is="dom-if" if="[[dataUnavailable]]">
       <div class="empty-screen">
         <h3 class="empty-title">No mappings available</h3>
-        <p class="empty-message">
-          Create a host rule to redirect traffic from one host to another
-        </p>
-        <h3>Examples</h3>
-        <p class="caption">Any call to https://*.domain.com/api redirect to http://127.0.0.1/</p>
-        <code>From "https://*.domain.com/api" To "http://127.0.0.1/"</code>
-        <p class="explanation">This transforms <code>https://my.domain.com/api/endpoint?param=value</code> to <code>http://127.0.0.1/endpoint?param=value</code> when creating a conneciton</p>
-        <paper-button raised on-tap="_onLearnMore">More examples</paper-button>
+        <paper-button raised on-click="_onLearnMore">Learn more</paper-button>
       </div>
     </template>
     <template is="dom-if" if="[[!dataUnavailable]]">
@@ -227,92 +142,174 @@ Custom property | Description | Default
         <host-rules-editor-item narrow="[[narrow]]" host-from="{{item.from}}" host-to="{{item.to}}" enabled="{{item.enabled}}" comment="{{item.comment}}" on-remove-rule="_deleteRule"></host-rules-editor-item>
       </template>
     </template>
-    <tutorial-toast opened="[[dataUnavailable]]">
-      Add a rule to redirect traffic without editing your hosts file.
-    </tutorial-toast>
+
+    <template is="dom-if" if="[[_tutorialAllowed]]">
+      <tutorial-toast opened="[[dataUnavailable]]">
+        Add host rules to redirect traffic without editing your hosts file.
+      </tutorial-toast>
+    </template>
+
     <paper-toast id="noModel" class="error-toast" text="Model not found. Please, report an issue."></paper-toast>
     <paper-toast id="noExport" class="error-toast" text="Export module not found. Please, report an issue."></paper-toast>
     <paper-toast id="deleteError" class="error-toast" text="Unable to delete rule. Please, report an issue."></paper-toast>
     <paper-toast id="updateError" class="error-toast" text="Unable to update rule. Please, report an issue."></paper-toast>
+
     <paper-dialog id="dataClearDialog" on-iron-overlay-closed="_onClearDialogResult">
       <h2>Danger zone</h2>
       <p>This will remove all stored rules. Without option to restore it.</p>
       <p>Maybe you should create a backup first?</p>
       <div class="buttons">
+        <paper-button on-click="_onExportAll">Create file backup</paper-button>
         <paper-button dialog-dismiss autofocus>Cancel</paper-button>
         <paper-button dialog-confirm class="action-button">Destroy</paper-button>
       </div>
     </paper-dialog>
-    <paper-fab icon="arc:add" class="add-fab" on-tap="appendRule"></paper-fab>
+
+    <paper-fab icon="arc:add" class="add-fab" on-click="appendRule"></paper-fab>
     <uuid-generator id="uuid"></uuid-generator>
   </template>
   <script>
-  Polymer({
-    is: 'host-rules-editor',
+  /**
+   * An element to render host rules mapping editor.
+   *
+   * Host rules mapping allow ARC to redirect connection from one URI to another
+   * without changinh the `host` header value. This element allows to enter mapping
+   * rules and to test them agains arbitrary URL.
+   *
+   * NOTE: This element does not provide data storing interface. Instead of operating
+   * on a data store it sends custom events that should be handled by the hosting
+   * application. Example inferface is included in `arc-models/host-rules-model` element.
+   *
+   * NOTE: This element works with `arc-data-export` element to export data to a file.
+   * You can use other way to handle `export-user-data` custom event to export host
+   * rules data.
+   *
+   * ### Example
+   *
+   * ```
+   * <arc-data-export></arc-data-export>
+   * <host-rules-model></host-rules-model>
+   * <host-rules-editor></host-rules-editor>
+   * ```
+   *
+   * ### Data model
+   *
+   * The `items` property accepts an array of the following objects:
+   *
+   * ```javascript
+   * {
+   *    from: String, // The from rule (may contain asterisks)
+   *    to: String, // replacement value
+   *    enabled: Boolean, // if false the rule is ignored
+   *    comment: String // optional rule description
+   * }
+   * ```
+   *
+   * ### Narrow view
+   *
+   * The element does not recognizes screen size to render mobile like view. To render
+   * narrow view (that fit mobile screen or narrow drawer etc) set `narrow` attribute
+   * on the element
+   *
+   * ```html
+   * <host-rules-editor narrow></host-rules-editor>
+   * ```
+   *
+   * ### Styling
+   *
+   * `<host-rules-editor>` provides the following custom properties and mixins for styling:
+   *
+   * Custom property | Description | Default
+   * ----------------|-------------|----------
+   * `--host-rules-editor` | Mixin applied to the element | `{}`
+   * `--inline-fom-action-icon-color` | Color of the icons in the form editor | `rgba(0, 0, 0, 0.74)`
+   * `--inline-fom-action-icon-color-hover` | Color of the icons in the form editor when hovering | * `--accent-color` or `rgba(0, 0, 0, 0.74)`
+   * `--host-rules-editor-loader` | Mixin applied to the paper-progress element when loading rules | `{}`
+   * `--host-rules-editor-empty-screen` | Mixin applied to the empty screen message | `{}`
+   * `--host-rules-editor-item-input` | Mixin applied to the rules inputs | `{}`
+   * `--host-rules-editor-item-comment-input` | Mixin applied to the comment textarea input | `{}`
+   * `--host-rules-editor-item-comment-input-narrow` | Mixin applied to the comment textarea input in narrow view | `{}`
+   * `--host-rules-editor-tutorial-toast` | Mixin applied to the tutorial toast element | `{}`
+   *
+   * @polymer
+   * @customElement
+   * @memberof UiElements
+   * @demo demo/index.html
+   */
+  class HostRulesEditor extends Polymer.Element {
+    static get is() {return 'host-rules-editor';}
+    static get properties() {
+      return {
+        // List of saved items restored from the datastore.
+        items: {
+          type: Array,
+          observer: '_itemsChanged'
+        },
+        // Computed value, true if `items` is set.
+        hasItems: {
+          type: Boolean,
+          readOnly: true,
+          value: false
+        },
+        // True when loading data from the datastore.
+        loading: {
+          type: Boolean,
+          readOnly: true,
+          notify: true
+        },
+        /**
+         * A computed flag that determines that the query to the databastore
+         * has been performed and empty result was returned.
+         * This can be true only if not in search.
+         */
+        dataUnavailable: {
+          type: Boolean,
+          computed: '_computeDataUnavailable(hasItems, loading)'
+        },
+        /**
+         * If set it renders "narrow" view fow small screens
+         */
+        narrow: Boolean,
+        /**
+         * If true the rules tester is visible.
+         */
+        rulesTesterOpened: Boolean,
+        _tutorialAllowed: Boolean
+      };
+    }
 
-    behaviors: [ArcBehaviors.OpenablePanelBehavior],
+    static get observers() {
+      return [
+        '_modelChanged(items.*)'
+      ];
+    }
 
-    properties: {
-      // List of saved items restored from the datastore.
-      items: {
-        type: Array,
-        observer: '_itemsChanged'
-      },
-      // Computed value, true if `items` is set.
-      hasItems: {
-        type: Boolean,
-        readOnly: true,
-        value: false
-      },
-      // True when loading data from the datastore.
-      loading: {
-        type: Boolean,
-        readOnly: true,
-        notify: true
-      },
-      /**
-       * A computed flag that determines that the query to the databastore
-       * has been performed and empty result was returned.
-       * This can be true only if not in search.
-       */
-      dataUnavailable: {
-        type: Boolean,
-        computed: '_computeDataUnavailable(hasItems, loading)'
-      },
-      /**
-       * If set it renders "narrow" view fow small screens
-       */
-      narrow: Boolean,
-      /**
-       * If true the rules tester is visible.
-       */
-      rulesTesterOpened: Boolean
-    },
+    constructor() {
+      super();
+      this._ruleUpdated = this._ruleUpdated.bind(this);
+      this._ruleDeleted = this._ruleDeleted.bind(this);
+      this._rulesCleared = this._rulesCleared.bind(this);
+    }
 
-    observers: [
-      '_processOnShow(_isOpened)',
-      '_modelChanged(items.*)'
-    ],
-
-    attached: function() {
-      this.listen(window, 'host-rules-changed', '_ruleUpdated');
-      this.listen(window, 'host-rules-deleted', '_ruleDeleted');
-    },
-
-    detached: function() {
-      this.unlisten(window, 'host-rules-changed', '_ruleUpdated');
-      this.unlisten(window, 'host-rules-deleted', '_ruleDeleted');
-    },
-
-    // Queries the datastore for a data if data are not set already.
-    _processOnShow: function(opened) {
-      if (!opened || this.items) {
-        return;
-      }
-      Polymer.RenderStatus.afterNextRender(this, function() {
-        this.refresh();
+    connectedCallback() {
+      super.connectedCallback();
+      window.addEventListener('host-rules-changed', this._ruleUpdated);
+      window.addEventListener('host-rules-deleted', this._ruleDeleted);
+      window.addEventListener('host-rules-clear', this._rulesCleared);
+      Polymer.RenderStatus.afterNextRender(this, () => {
+        if (!this.items) {
+          this.refresh();
+        }
+        this._tutorialAllowed = true;
       });
-    },
+    }
+
+    disconnectedCallback() {
+      super.disconnectedCallback();
+      window.removeEventListener('host-rules-changed', this._ruleUpdated);
+      window.removeEventListener('host-rules-deleted', this._ruleDeleted);
+      window.removeEventListener('host-rules-clear', this._rulesCleared);
+    }
     /**
      * Refreshes the list of rules from the model.
      * This element is designed to work with `arc-models/host-rules-model`
@@ -321,35 +318,41 @@ Custom property | Description | Default
      *
      * Calling this function will replace current `items` value with the one
      * received from the model.
+     *
+     * @return {Promise}
      */
-    refresh: function() {
+    refresh() {
       if (this.loading) {
         return;
       }
       this._setLoading(true);
-      var ev = this.fire('host-rules-list', {}, {
-        cancelable: true
+      const e = new CustomEvent('host-rules-list', {
+        composed: true,
+        cancelable: true,
+        bubbles: true,
+        detail: {}
       });
-      if (!ev.defaultPrevented) {
+      this.dispatchEvent(e);
+      if (!e.defaultPrevented) {
         this._setLoading(false);
         this.$.noModel.opened = true;
         return Promise.reject(new Error('Model not found'));
       }
 
-      return ev.detail.result
-      .then(rules => {
+      return e.detail.result
+      .then((rules) => {
         this._setLoading(false);
         this.items = rules;
       });
-    },
+    }
 
     // Computes value for the `dataUnavailable` proeprty
-    _computeDataUnavailable: function(hasItems, loading) {
+    _computeDataUnavailable(hasItems, loading) {
       return !loading && !hasItems;
-    },
+    }
 
     // Computes and sets value for `hasItems` property
-    _itemsChanged: function(value) {
+    _itemsChanged(value) {
       if (value && value.length) {
         if (!this.hasItems) {
           this._setHasItems(true);
@@ -359,31 +362,52 @@ Custom property | Description | Default
           this._setHasItems(false);
         }
       }
-    },
-    // Menu item handler to export all data to a file
-    _onExportAll: function() {
+    }
+    /**
+     * Handler for export all to file menu click
+     */
+    _onExportAll() {
+      this._sendExport('file');
+    }
+    /**
+     * Handler for export all to Google Drive menu click
+     */
+    _onExportAllDrive() {
+      this._sendExport('drive');
+    }
+    /**
+     * Dispatches `export-data` custom event.
+     * @param {String} destination File storage destination.
+     */
+    _sendExport(destination) {
       this.$.mainMenu.opened = false;
-      Polymer.RenderStatus.afterNextRender(this, function() {
+      Polymer.RenderStatus.afterNextRender(this, () => {
         this.$.mainMenuOptions.selected = -1;
       });
-      var ev = this.fire('export-user-data', {
-        type: 'host-rules',
-        destination: 'file',
-        file: 'arc-host-rules.json'
-      }, {
+      const e = new CustomEvent('export-data', {
+        composed: true,
         cancelable: true,
-        composed: true
+        bubbles: true,
+        detail: {
+          destination,
+          file: 'arc-host-rules.json',
+          type: 'arc-export',
+          data: {
+            'host-rules': true
+          }
+        }
       });
-      if (!ev.defaultPrevented) {
+      this.dispatchEvent(e);
+      if (!e.defaultPrevented) {
         this.$.noExport.opened = true;
         return;
       }
-    },
+    }
     /**
      * Appends empty rule to the rules list.
      */
-    appendRule: function() {
-      var rule = {
+    appendRule() {
+      const rule = {
         from: '',
         to: '',
         enabled: true,
@@ -394,32 +418,44 @@ Custom property | Description | Default
       } else {
         this.push('items', rule);
       }
-    },
-
-    _deleteRule: function(e) {
-      var item = e.model.get('item');
+    }
+    /**
+     * Handler for delete rule event from an item.
+     * @param {CustomEvent} e
+     * @return {Promise}
+     */
+    _deleteRule(e) {
+      const item = e.model.get('item');
       if (!item._id) {
         this.splice('items', e.model.get('index'), 1);
-        return;
+        return Promise.resolve();
       }
-      var ev = this.fire('host-rules-deleted', {
-        id: item._id,
-        rev: item._rev
-      }, {
-        cancelable: true
+
+      const e2 = new CustomEvent('host-rules-deleted', {
+        composed: true,
+        cancelable: true,
+        bubbles: true,
+        detail: {
+          id: item._id,
+          rev: item._rev
+        }
       });
-      if (!ev.defaultPrevented) {
+      this.dispatchEvent(e2);
+      if (!e2.defaultPrevented) {
         this.$.noModel.opened = true;
         return Promise.reject(new Error('Model not found'));
       }
-      return ev.detail.result
+      return e2.detail.result
       .catch(() => {
         this.$.deleteError.opened = true;
       });
-    },
+    }
 
-    _modelChanged: function(record) {
+    _modelChanged(record) {
       this._itemsChanged(record.base);
+      if (this.__ignoreChangeNotifier) {
+        return;
+      }
       if (record.path === 'items' || record.path === 'items.length' ||
         record.path === 'items.splices') {
         return;
@@ -427,88 +463,156 @@ Custom property | Description | Default
       if (record.path.indexOf('._rev') !== -1) {
         return;
       }
-      var changePathItem = record.path.substr(0, record.path.lastIndexOf('.'));
+      let changePathItem = record.path.substr(0, record.path.lastIndexOf('.'));
       if (changePathItem === 'items') {
         changePathItem = record.path;
       }
-      this.debounce('host-rules-changed-notifier', function() {
-        let item = this.get(changePathItem);
-        if (!item.from || !item.to) {
+      if (this._hostRulesChangedNotifier) {
+        return;
+      }
+      this._hostRulesChangedNotifier = true;
+      setTimeout(() => {
+        this._hostRulesChangedNotifier = false;
+        const item = this.get(changePathItem);
+        if (!item || !item.from || !item.to) {
           return;
         }
-        let newItem = false;
         if (!item._id) {
           item._id = this.$.uuid.generate();
-          newItem = true;
         }
-        let ev = this.fire('host-rules-changed', {
-          rule: item
-        }, {
-          cancelable: true
+        const e = new CustomEvent('host-rules-changed', {
+          composed: true,
+          cancelable: true,
+          bubbles: true,
+          detail: {
+            rule: item
+          }
         });
-        ev.detail.result.then(item => {
+        this.dispatchEvent(e);
+        e.detail.result.then((item) => {
           this.set(changePathItem + '._rev', item._rev);
         })
-        .catch(cause => {
+        .catch((cause) => {
           console.eror(cause);
           this.$.updateError.opened = true;
         });
       }, 250);
-    },
+    }
     /**
      * Updates a rule from the `host-rules-changed` custom event.
      * The event should contain `rule` property on the event's detail object
      * containing the rule object.
+     *
+     * @param {CustomEvent} e
      */
-    _ruleUpdated: function(e) {
-      if (e.cancelable || e.target === this) {
+    _ruleUpdated(e) {
+      if (e.cancelable || e.composedPath()[0] === this) {
         return;
       }
-      var updatedValue = e.detail.rule;
+      this.__ignoreChangeNotifier = true;
+      const updatedValue = e.detail.rule;
       if (!this.items) {
         this.set('items', [updatedValue]);
+        this.__ignoreChangeNotifier = false;
         return;
       }
-      var index = this.items.findIndex(item => item._id === updatedValue._id);
+      const index = this.items.findIndex((item) => item._id === updatedValue._id);
       if (index === -1) {
         this.push('items', updatedValue);
       } else {
         this.set(['items', index], updatedValue);
       }
-    },
+      this.__ignoreChangeNotifier = false;
+    }
     /**
      * Deletes the rule from the `host-rules-deleted` custom event.
      * The event should contain `rule` property on the event's detail object
      * containing the rule object.
+     *
+     * @param {CustomEvent} e
      */
-    _ruleDeleted: function(e) {
-      if (e.cancelable || e.target === this) {
+    _ruleDeleted(e) {
+      if (e.cancelable || e.composedPath()[0] === this) {
         return;
       }
       if (!this.items || !this.items.length) {
         return;
       }
-      var id = e.detail.id;
-      var index = this.items.findIndex(item => item._id === id);
+      const id = e.detail.id;
+      const index = this.items.findIndex((item) => item._id === id);
       if (index === -1) {
         return;
       }
       this.splice('items', index, 1);
-    },
+    }
     /**
      * Toggles the rule tester view.
      * Use `rulesTesterOpened` property to control the view instead of calling
      * this function.
      */
-    toggleRulesTester: function() {
+    toggleRulesTester() {
       this.rulesTesterOpened = !this.rulesTesterOpened;
-    },
+    }
 
-    _onLearnMore: function() {
-      var url = 'https://github.com/advanced-rest-client/arc-electron/wiki/Host-rules';
+    _onLearnMore() {
+      const url = 'https://github.com/advanced-rest-client/arc-electron/wiki/Host-rules';
+      const e = new CustomEvent('open-external-url', {
+        composed: true,
+        cancelable: true,
+        bubbles: true,
+        detail: {
+          url
+        }
+      });
+      this.dispatchEvent(e);
+      if (e.defaultPrevented) {
+        return;
+      }
       window.open(url);
     }
 
+    _deleteAll() {
+      this.$.dataClearDialog.opened = true;
+    }
+    /**
+     * Called when the delete warning dialog closes.
+     *
+     * The function dispatches custom event handled by the model to remove all
+     * data.
+     *
+     * @param {CustomEvent} e
+     * @return {Promise}
+     */
+    _onClearDialogResult(e) {
+      if (e.detail.canceled || !e.detail.confirmed) {
+        return Promise.resolve();
+      }
+      const e2 = new CustomEvent('host-rules-clear', {
+        bubbles: true,
+        cancelable: true,
+        composed: true,
+        detail: {}
+      });
+      this.dispatchEvent(e2);
+      if (!e2.defaultPrevented) {
+        this.$.noModel.opened = true;
+        return Promise.reject(new Error('No model found.'));
+      }
+      return e2.detail.result
+      .catch(() => {
+        this.$.deleteError.opened = true;
+      });
+    }
+    /**
+     * Handler for non cancelable `host-rules-clear` to remove all rules.
+     * @param {CustomEvent} e
+     */
+    _rulesCleared(e) {
+      if (e.cancelable) {
+        return;
+      }
+      this.items = [];
+    }
     /**
      * Dispatched when value of a rule chnages.
      *
@@ -548,6 +652,13 @@ Custom property | Description | Default
      *
      * @event host-rules-list
      */
-  });
+
+    /**
+     * Dispatched to request the model to clear the data store
+     *
+     * @event host-rules-clear
+     */
+  }
+  window.customElements.define(HostRulesEditor.is, HostRulesEditor);
   </script>
 </dom-module>

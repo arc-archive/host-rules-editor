@@ -1,6 +1,6 @@
 <!--
 @license
-Copyright 2016 The Advanced REST client authors <arc@mulesoft.com>
+Copyright 2018 The Advanced REST client authors <arc@mulesoft.com>
 Licensed under the Apache License, Version 2.0 (the "License"); you may not
 use this file except in compliance with the License. You may obtain a copy of
 the License at
@@ -11,7 +11,7 @@ WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
 License for the specific language governing permissions and limitations under
 the License.
 -->
-<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../polymer/polymer-element.html">
 <link rel="import" href="../paper-input/paper-input.html">
 <link rel="import" href="../paper-input/paper-textarea.html">
 <link rel="import" href="../paper-checkbox/paper-checkbox.html">
@@ -19,14 +19,6 @@ the License.
 <link rel="import" href="../iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../arc-icons/arc-icons.html">
-<!--
-Editor rule item editor.
-Renders inputs to control host rules.
-
-@group UI Elements
-@element host-rules-editor-item
-@demo demo/index.html
--->
 <dom-module id="host-rules-editor-item">
   <template>
     <style>
@@ -67,7 +59,6 @@ Renders inputs to control host rules.
     }
 
     .action-icon {
-      margin-top: 12px;
       color: var(--inline-fom-action-icon-color, rgba(0, 0, 0, 0.74));
       transition: color 0.2s linear;
     }
@@ -95,9 +86,9 @@ Renders inputs to control host rules.
       <div class="input-fields">
         <div class="from-field">
           <paper-checkbox checked="{{enabled}}"></paper-checkbox>
-          <paper-input label="From (required)" value="{{hostFrom}}" type="url" class="host-from"></paper-input>
+          <paper-input label="From (required)" value="{{hostFrom}}" type="url" class="host-from" no-label-float></paper-input>
         </div>
-        <paper-input class="to-field" label="To (required)" value="{{hostTo}}" type="url"></paper-input>
+        <paper-input class="to-field" label="To (required)" value="{{hostTo}}" type="url" no-label-float></paper-input>
       </div>
       <paper-icon-button icon="arc:close" class="action-icon" data-action="delete" title="Remove rule" on-tap="_requestRemove"></paper-icon-button>
       <paper-icon-button icon="arc:insert-comment" class="action-icon" data-action="comment" title="Add comment to the rule" on-tap="toggleComment"></paper-icon-button>
@@ -107,10 +98,20 @@ Renders inputs to control host rules.
     </iron-collapse>
   </template>
   <script>
-    Polymer({
-      is: 'host-rules-editor-item',
-
-      properties: {
+  /**
+   * Editor rule item editor.
+   *
+   * Renders inputs to control host rules.
+   *
+   * @polymer
+   * @customElement
+   * @memberof UiElements
+   * @demo demo/index.html
+   */
+  class HostRulesEditorItem extends Polymer.Element {
+    static get is() {return 'host-rules-editor-item';}
+    static get properties() {
+      return {
         /**
          * From host declaration. It can contain a `*` wildchar.
          *
@@ -159,26 +160,28 @@ Renders inputs to control host rules.
           type: Boolean,
           reflectToAttribute: true
         }
-      },
-      /**
-       * Toggles the comment section.
-       */
-      toggleComment: function() {
-        this.commentOpened = !this.commentOpened;
-      },
+      };
+    }
+    /**
+     * Toggles the comment section.
+     */
+    toggleComment() {
+      this.commentOpened = !this.commentOpened;
+    }
 
-      _requestRemove: function() {
-        this.fire('remove-rule', {}, {
-          bubbles: false
-        });
-      }
+    _requestRemove() {
+      this.dispatchEvent(new CustomEvent('remove-rule', {
+        composed: true
+      }));
+    }
 
-      /**
-       * Dispatched when the user request to remove the rule.
-       * Note that this event does not bubbles.
-       *
-       * @event remove-rule
-       */
-    });
+    /**
+     * Dispatched when the user request to remove the rule.
+     * Note that this event does not bubbles.
+     *
+     * @event remove-rule
+     */
+  }
+  window.customElements.define(HostRulesEditorItem.is, HostRulesEditorItem);
   </script>
 </dom-module>

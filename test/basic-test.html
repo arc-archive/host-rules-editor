@@ -1,35 +1,23 @@
 <!doctype html>
-<!--
-@license
-Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
-This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
-The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
-The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
-Code distributed by Google as part of the polymer project is also
-subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
--->
 <html>
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
 
-    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+    <script src="../../webcomponentsjs/webcomponents-loader.js"></script>
     <script src="../../web-component-tester/browser.js"></script>
-    <script src="../../iron-test-helpers/test-helpers.js"></script>
-    <script src="../../iron-test-helpers/mock-interactions.js"></script>
     <script src="model.js"></script>
     <link rel="import" href="../host-rules-editor.html">
   </head>
   <body>
 
-    <test-fixture id="basic">
+    <test-fixture id="Basic">
       <template>
         <host-rules-editor></host-rules-editor>
       </template>
     </test-fixture>
 
     <script>
-    /* global fixture, assert, sinon, TestHelpers, MockInteractions */
     const TEST_RULES = [{
       from: 'host-from',
       to: 'host-to',
@@ -37,11 +25,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       comment: 'test-comment',
       _id: 'test-id'
     }];
-    suite('basic', function() {
 
-      var element;
+    suite('basic', function() {
+      let element;
       setup(function() {
-        element = fixture('basic');
+        element = fixture('Basic');
       });
 
       test('hasItems is false by default', function() {
@@ -52,8 +40,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         assert.isUndefined(element.loading);
       });
 
-      test('dataUnavailable is not computed', function() {
-        assert.isUndefined(element.dataUnavailable);
+      test('dataUnavailable is computed', function() {
+        assert.isTrue(element.dataUnavailable);
       });
 
       test('rulesTesterOpened is undefined', function() {
@@ -62,9 +50,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     });
 
     suite('refresh()', function() {
-      var element;
+      let element;
       setup(function() {
-        element = fixture('basic');
+        element = fixture('Basic');
       });
 
       test('Sets the loading property', function() {
@@ -73,7 +61,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       });
 
       test('Sends host-rules-list custom event', function() {
-        var spy = sinon.spy();
+        let spy = sinon.spy();
         element.addEventListener('host-rules-list', spy);
         element.refresh();
         assert.isTrue(spy.calledOnce);
@@ -102,21 +90,25 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         });
       });
 
-      test('Renders the tutorial', function() {
-        return element.refresh()
+      test('Renders the tutorial', function(done) {
+        element.refresh()
         .then(() => {
-          TestHelpers.forceXIfStamp(element);
-          var tutorial = element.$$('tutorial-toast');
-          assert.isTrue(tutorial.opened);
+          flush(() => {
+            const tutorial = element.shadowRoot.querySelector('tutorial-toast');
+            assert.isTrue(tutorial.opened);
+            done();
+          });
         });
       });
 
-      test('Renders the empty info screen', function() {
-        return element.refresh()
+      test('Renders empty info screen', function(done) {
+        element.refresh()
         .then(() => {
-          TestHelpers.forceXIfStamp(element);
-          var tutorial = element.$$('.empty-screen');
-          assert.ok(tutorial);
+          flush(() => {
+            const node = element.shadowRoot.querySelector('.empty-screen');
+            assert.ok(node);
+            done();
+          });
         });
       });
 
@@ -136,31 +128,35 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         });
       });
 
-      test('The tutorial is closed with data', function() {
+      test('The tutorial is closed with data', function(done) {
         window.HOST_RULES = TEST_RULES;
-        return element.refresh()
+        element.refresh()
         .then(() => {
-          TestHelpers.forceXIfStamp(element);
-          var tutorial = element.$$('tutorial-toast');
-          assert.isFalse(tutorial.opened);
+          flush(() => {
+            const node = element.shadowRoot.querySelector('tutorial-toast');
+            assert.isFalse(node.opened);
+            done();
+          });
         });
       });
 
-      test('Info screen is not rendered', function() {
+      test('Info screen is not rendered', function(done) {
         window.HOST_RULES = TEST_RULES;
-        return element.refresh()
+        element.refresh()
         .then(() => {
-          TestHelpers.forceXIfStamp(element);
-          var tutorial = element.$$('.empty-screen');
-          assert.notOk(tutorial);
+          flush(() => {
+            const node = element.shadowRoot.querySelector('.empty-screen');
+            assert.notOk(node);
+            done();
+          });
         });
       });
     });
 
     suite('appendRule()', function() {
-      var element;
+      let element;
       setup(function() {
-        element = fixture('basic');
+        element = fixture('Basic');
       });
 
       test('Should append an empty rule', function() {
@@ -171,7 +167,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       });
 
       test('Appending empty item does not fire host-rules-changed custom event', function(done) {
-        var spy = sinon.spy();
+        const spy = sinon.spy();
         element.addEventListener('host-rules-changed', spy);
         element.appendRule();
         setTimeout(function() {
@@ -182,16 +178,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     });
 
     suite('host-rules-changed custom event', function() {
-      var element;
+      let element;
       setup(function() {
-        element = fixture('basic');
+        element = fixture('Basic');
         element.refresh = function() {};
         element.appendRule();
         TEST_RULES[0].from = 'host-from';
       });
 
       test('host-rules-changed is not fired when missing data', function(done) {
-        var spy = sinon.spy();
+        const spy = sinon.spy();
         element.addEventListener('host-rules-changed', spy);
         element.set(['items', 0, 'from'], 'test');
         setTimeout(function() {
@@ -234,7 +230,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       function fireUpdated(cancelable) {
         cancelable = cancelable || false;
-        var ev = new CustomEvent('host-rules-changed', {
+        const ev = new CustomEvent('host-rules-changed', {
           bubbles: true,
           cancelable: cancelable,
           detail: {
@@ -271,9 +267,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     });
 
     suite('host-rules-deleted custom event', function() {
-      var element;
-      setup(function() {
-        element = fixture('basic');
+      let element;
+      setup(function(done) {
+        element = fixture('Basic');
         element.refresh = function() {};
         element._setLoading(false);
         element.items = [{
@@ -283,13 +279,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           comment: 'test-comment',
           _id: 'test-id'
         }];
+        flush(() => done());
       });
 
       function deleteItem() {
-        TestHelpers.forceXIfStamp(element);
-        var item = element.$$('host-rules-editor-item');
-        var button = item.$$('[data-action="delete"]');
-        MockInteractions.tap(button);
+        const item = element.shadowRoot.querySelector('host-rules-editor-item');
+        const button = item.shadowRoot.querySelector('[data-action="delete"]');
+        button.click();
       }
 
       test('Fires the event', function(done) {
@@ -311,7 +307,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       function fireDeleted(id, cancelable) {
         cancelable = cancelable || false;
-        var ev = new CustomEvent('host-rules-deleted', {
+        const ev = new CustomEvent('host-rules-deleted', {
           bubbles: true,
           cancelable: cancelable,
           detail: {
@@ -336,8 +332,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         assert.lengthOf(element.items, 1, 'Rule is not deleted');
       });
     });
-
     </script>
-
   </body>
 </html>
