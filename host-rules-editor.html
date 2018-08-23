@@ -468,10 +468,9 @@ the License.
         changePathItem = record.path;
       }
       if (this._hostRulesChangedNotifier) {
-        return;
+        clearTimeout(this._hostRulesChangedNotifier);
       }
-      this._hostRulesChangedNotifier = true;
-      setTimeout(() => {
+      this._hostRulesChangedNotifier = setTimeout(() => {
         this._hostRulesChangedNotifier = false;
         const item = this.get(changePathItem);
         if (!item || !item.from || !item.to) {
