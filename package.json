@@ -1,10 +1,10 @@
 {
-  "name": "host-rules-editor",
-  "version": "2.0.0-preview",
+  "name": "@advanced-rest-client/host-rules-editor",
+  "version": "2.0.0",
   "license": "Apache-2.0",
   "description": "An element to render host rules mapping",
   "devDependencies": {
-    "@polymer/gen-typescript-declarations": "^1.1.1"
+    "@polymer/gen-typescript-declarations": "^1.6.0"
   },
   "private": false,
   "main": "host-rules-editor.html",
