@@ -1,7 +1,7 @@
-var lastId = 1;
-var HostModel = {
+let lastId = 1;
+const HostModel = {
   fire: function(type, detail) {
-    var ev = new CustomEvent(type, {
+    const ev = new CustomEvent(type, {
       detail: detail,
       cancelable: false,
       bubbles: true
@@ -22,7 +22,7 @@ var HostModel = {
       }
       e.preventDefault();
       e.detail.result = Promise.resolve();
-      var opts = {
+      const opts = {
         rule: e.detail.rule
       };
       setTimeout(function() {
@@ -37,7 +37,7 @@ var HostModel = {
         return;
       }
       e.preventDefault();
-      var opts = {
+      const opts = {
         rule: e.detail.rule
       };
       if (!opts.rule._id) {
@@ -52,7 +52,7 @@ var HostModel = {
     window.addEventListener('host-rules-list', function(e) {
       e.preventDefault();
       e.stopPropagation();
-      var rules = window.HOST_RULES || [];
+      const rules = window.HOST_RULES || [];
       e.detail.result = Promise.resolve(rules);
     });
   }
