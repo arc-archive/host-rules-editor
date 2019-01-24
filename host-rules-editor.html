@@ -109,6 +109,18 @@ the License.
       position: absolute;
       @apply --host-rules-editor-tutorial-toast;
     }
+
+    .menu-item {
+      @apply --paper-item;
+      color: var(--context-menu-item-color);
+      background-color: var(--context-menu-item-background-color);
+    }
+
+    .menu-item:hover {
+      @apply --paper-item-hover;
+      color: var(--context-menu-item-color-hover);
+      background-color: var(--context-menu-item-background-color-hover);
+    }
     </style>
     <div class="header">
       <h2>Hosts rules mapping</h2>
@@ -117,10 +129,10 @@ the License.
         <paper-menu-button dynamic-align id="mainMenu">
           <paper-icon-button icon="arc:more-vert" slot="dropdown-trigger"></paper-icon-button>
           <paper-listbox slot="dropdown-content" id="mainMenuOptions">
-            <paper-icon-item on-click="_onExportAll" data-action="export-all"><iron-icon icon="arc:archive" slot="item-icon"></iron-icon>Export all to file</paper-icon-item>
-            <paper-icon-item on-click="_onExportAllDrive" data-action="export-drive"><iron-icon icon="arc:drive-color" slot="item-icon"></iron-icon>Export all to Google Drive</paper-icon-item>
-            <paper-icon-item on-click="_deleteAll" data-action="export-drive"><iron-icon icon="arc:clear" slot="item-icon"></iron-icon>Delete all</paper-icon-item>
-            <paper-icon-item on-click="_onLearnMore" data-action="learn-more"><iron-icon icon="arc:info-outline" slot="item-icon"></iron-icon>Learn more about host rules</paper-icon-item>
+            <paper-icon-item on-click="_onExportAll" data-action="export-all" class="menu-item"><iron-icon icon="arc:archive" slot="item-icon"></iron-icon>Export all to file</paper-icon-item>
+            <paper-icon-item on-click="_onExportAllDrive" data-action="export-drive" class="menu-item"><iron-icon icon="arc:drive-color" slot="item-icon"></iron-icon>Export all to Google Drive</paper-icon-item>
+            <paper-icon-item on-click="_deleteAll" data-action="export-drive" class="menu-item"><iron-icon icon="arc:clear" slot="item-icon"></iron-icon>Delete all</paper-icon-item>
+            <paper-icon-item on-click="_onLearnMore" data-action="learn-more" class="menu-item"><iron-icon icon="arc:info-outline" slot="item-icon"></iron-icon>Learn more about host rules</paper-icon-item>
           </paper-listbox>
         </paper-menu-button>
       </div>
@@ -274,7 +286,11 @@ the License.
          * If true the rules tester is visible.
          */
         rulesTesterOpened: Boolean,
-        _tutorialAllowed: Boolean
+        _tutorialAllowed: Boolean,
+        /**
+         * When set it won't ask the model for data when connected to the DOM.
+         */
+        noAuto: Boolean
       };
     }
 
@@ -296,9 +312,16 @@ the License.
       window.addEventListener('host-rules-changed', this._ruleUpdated);
       window.addEventListener('host-rules-deleted', this._ruleDeleted);
       window.addEventListener('host-rules-clear', this._rulesCleared);
+      if (this.noAuto) {
+        this._tutorialAllowed = true;
+        return;
+      }
       Polymer.RenderStatus.afterNextRender(this, () => {
-        if (!this.items) {
-          this.refresh();
+        if (!this.items && !this.noAuto) {
+          this.refresh()
+          .catch((cause) => {
+            console.warn(cause);
+          });
         }
         this._tutorialAllowed = true;
       });
@@ -363,6 +386,11 @@ the License.
         }
       }
     }
+
+    _closeMainMenu() {
+      this.$.mainMenu.opened = false;
+      this.$.mainMenuOptions.selected = -1;
+    }
     /**
      * Handler for export all to file menu click
      */
@@ -380,10 +408,14 @@ the License.
      * @param {String} destination File storage destination.
      */
     _sendExport(destination) {
-      this.$.mainMenu.opened = false;
-      Polymer.RenderStatus.afterNextRender(this, () => {
-        this.$.mainMenuOptions.selected = -1;
-      });
+      this._closeMainMenu();
+      const e = this._dispatchExport(destination);
+      if (!e.defaultPrevented) {
+        this.$.noExport.opened = true;
+      }
+    }
+
+    _dispatchExport(destination) {
       const e = new CustomEvent('export-data', {
         composed: true,
         cancelable: true,
@@ -398,11 +430,9 @@ the License.
         }
       });
       this.dispatchEvent(e);
-      if (!e.defaultPrevented) {
-        this.$.noExport.opened = true;
-        return;
-      }
+      return e;
     }
+
     /**
      * Appends empty rule to the rules list.
      */
@@ -554,6 +584,7 @@ the License.
     }
 
     _onLearnMore() {
+      this._closeMainMenu();
       const url = 'https://github.com/advanced-rest-client/arc-electron/wiki/Host-rules';
       const e = new CustomEvent('open-external-url', {
         composed: true,
@@ -567,10 +598,11 @@ the License.
       if (e.defaultPrevented) {
         return;
       }
-      window.open(url);
+      return window.open(url);
     }
 
     _deleteAll() {
+      this._closeMainMenu();
       this.$.dataClearDialog.opened = true;
     }
     /**
