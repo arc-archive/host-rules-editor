@@ -20,3 +20,12 @@
 
 
 
+# [2.0.0](https://github.com/advanced-rest-client/host-rules-editor/compare/0.1.2...2.0.0) (2019-01-24)
+
+
+### Update
+
+* Updating debouncer logic when updating model ([4481af7fd56d84a4459e232c127a1bd5ce4e287f](https://github.com/advanced-rest-client/host-rules-editor/commit/4481af7fd56d84a4459e232c127a1bd5ce4e287f))
+
+
+
