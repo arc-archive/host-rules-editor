@@ -5,17 +5,16 @@
  *   https://github.com/Polymer/tools/tree/master/packages/gen-typescript-declarations
  *
  * To modify these typings, edit the source file(s):
- *   host-rules-tester.html
+ *   host-rules-tester.js
  */
 
 
 // tslint:disable:variable-name Describing an API that's defined elsewhere.
 // tslint:disable:no-any describes the API as best we are able today
 
-/// <reference path="../polymer/types/polymer-element.d.ts" />
-/// <reference path="../paper-input/paper-input.d.ts" />
-/// <reference path="../iron-flex-layout/iron-flex-layout.d.ts" />
-/// <reference path="../paper-button/paper-button.d.ts" />
+import {PolymerElement} from '@polymer/polymer/polymer-element.js';
+
+import {html} from '@polymer/polymer/lib/utils/html-tag.js';
 
 declare namespace UiElements {
 
@@ -28,7 +27,7 @@ declare namespace UiElements {
    * It evaluates user entered URL against provided rules and displays the
    * result of the computation.
    */
-  class HostRulesTester extends Polymer.Element {
+  class HostRulesTester extends PolymerElement {
 
     /**
      * Provided by the user URL
@@ -52,6 +51,9 @@ declare namespace UiElements {
   }
 }
 
-interface HTMLElementTagNameMap {
-  "host-rules-tester": UiElements.HostRulesTester;
+declare global {
+
+  interface HTMLElementTagNameMap {
+    "host-rules-tester": UiElements.HostRulesTester;
+  }
 }

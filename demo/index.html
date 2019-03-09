@@ -1,21 +1,21 @@
-<!doctype html>
-<html>
-<head>
+<!DOCTYPE html><html><head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
   <title>host-rules-editor demo</title>
-  <script src="../../webcomponentsjs/webcomponents-loader.js"></script>
-  <link rel="import" href="../../shadycss/apply-shim.html">
-  <link rel="import" href="../../polymer/lib/elements/custom-style.html">
-  <link rel="import" href="../../polymer/lib/elements/dom-bind.html">
-  <link rel="import" href="../../app-pouchdb/pouchdb.html">
-  <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
-  <link rel="import" href="../../arc-electron-default-theme/arc-electron-default-theme.html">
-  <link rel="import" href="../../arc-models/host-rules-model.html">
-  <link rel="import" href="../../neon-animation/web-animations.html">
-  <link rel="import" href="../../paper-toast/paper-toast.html">
-  <link rel="import" href="../host-rules-editor.html">
+  <script src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+  <script src="../../../web-animations-js/web-animations-next.min.js"></script>
+
+  <script type="module" src="../../../@webcomponents/shadycss/entrypoints/apply-shim.js"></script>
+  <script type="module" src="../../../@polymer/polymer/lib/elements/custom-style.js"></script>
+  <script type="module" src="../../../@polymer/polymer/lib/elements/dom-bind.js"></script>
+  <script type="module" src="../../../@polymer/iron-demo-helpers/demo-pages-shared-styles.js"></script>
+  <script type="module" src="../../../@advanced-rest-client/arc-electron-default-theme/arc-electron-default-theme.js"></script>
+  <script type="module" src="../../../@advanced-rest-client/arc-models/host-rules-model.js"></script>
+  <script type="module" src="../../../@polymer/paper-toast/paper-toast.js"></script>
+  <script type="module" src="../../../pouchdb/dist/pouchdb.js"></script>
+  <script type="module" src="../host-rules-editor.js"></script>
+
   <style>
   body,
   html {
@@ -44,7 +44,7 @@
     </style>
   </custom-style>
 </head>
-<body unresolved>
+<body unresolved="">
   <dom-bind id="demo">
     <template is="dom-bind">
       <host-rules-model></host-rules-model>
@@ -55,7 +55,7 @@
     </template>
   </dom-bind>
   <script>
-  window.addEventListener('export-data', function(e) {
+  window.addEventListener('arc-data-export', function(e) {
     e.preventDefault();
     e.detail.result = Promise.resolve();
     document.getElementById('fileExport').opened = true;

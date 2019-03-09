@@ -5,20 +5,17 @@
  *   https://github.com/Polymer/tools/tree/master/packages/gen-typescript-declarations
  *
  * To modify these typings, edit the source file(s):
- *   host-rules-editor-item.html
+ *   host-rules-editor-item.js
  */
 
 
 // tslint:disable:variable-name Describing an API that's defined elsewhere.
 
-/// <reference path="../polymer/types/polymer-element.d.ts" />
-/// <reference path="../paper-input/paper-input.d.ts" />
-/// <reference path="../paper-input/paper-textarea.d.ts" />
-/// <reference path="../paper-checkbox/paper-checkbox.d.ts" />
-/// <reference path="../iron-collapse/iron-collapse.d.ts" />
-/// <reference path="../iron-flex-layout/iron-flex-layout.d.ts" />
-/// <reference path="../paper-icon-button/paper-icon-button.d.ts" />
-/// <reference path="../arc-icons/arc-icons.d.ts" />
+import {PolymerElement} from '@polymer/polymer/polymer-element.js';
+
+import {html} from '@polymer/polymer/lib/utils/html-tag.js';
+
+export {HostRulesEditorItem};
 
 declare namespace UiElements {
 
@@ -27,7 +24,7 @@ declare namespace UiElements {
    *
    * Renders inputs to control host rules.
    */
-  class HostRulesEditorItem extends Polymer.Element {
+  class HostRulesEditorItem extends PolymerElement {
 
     /**
      * From host declaration. It can contain a `*` wildchar.
@@ -76,6 +73,9 @@ declare namespace UiElements {
   }
 }
 
-interface HTMLElementTagNameMap {
-  "host-rules-editor-item": UiElements.HostRulesEditorItem;
+declare global {
+
+  interface HTMLElementTagNameMap {
+    "host-rules-editor-item": UiElements.HostRulesEditorItem;
+  }
 }

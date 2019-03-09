@@ -3,11 +3,15 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
-    <script src="../../webcomponentsjs/webcomponents-loader.js"></script>
-    <script src="../../web-component-tester/browser.js"></script>
-    <link rel="import" href="../../neon-animation/web-animations.html">
-    <script src="model.js"></script>
-    <link rel="import" href="../host-rules-editor.html">
+
+    <script src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+    <script src="../node_modules/@polymer/test-fixture/test-fixture.js"></script>
+    <script src="../node_modules/mocha/mocha.js"></script>
+    <script src="../node_modules/chai/chai.js"></script>
+    <script src="../node_modules/wct-mocha/wct-mocha.js"></script>
+
+    <script src="../../../web-animations-js/web-animations-next.min.js"></script>
+    <script src="./model.js"></script>
   </head>
   <body>
 
@@ -23,7 +27,10 @@
       </template>
     </test-fixture>
 
-    <script>
+    <script type="module">
+    import '../host-rules-editor.js';
+    import {afterNextRender} from '../../../@polymer/polymer/lib/utils/render-status.js';
+    import sinon from '../../../sinon/pkg/sinon-esm.js';
     const TEST_RULES = [{
       from: 'host-from',
       to: 'host-to',
@@ -67,7 +74,7 @@
         const element = fixture('NoAuto');
         const spy = sinon.spy();
         element.addEventListener('host-rules-list', spy);
-        Polymer.RenderStatus.afterNextRender(element, () => {
+        afterNextRender(element, () => {
           assert.isFalse(spy.called);
           done();
         });
@@ -390,7 +397,7 @@
 
       test('Dispatches the event', function() {
         const spy = sinon.spy();
-        element.addEventListener('export-data', spy);
+        element.addEventListener('arc-data-export', spy);
         element._dispatchExport(dest);
         assert.isTrue(spy.called);
       });
@@ -398,7 +405,7 @@
       test('Returns the  event', function() {
         const e = element._dispatchExport(dest);
         assert.typeOf(e, 'customevent');
-        assert.equal(e.type, 'export-data');
+        assert.equal(e.type, 'arc-data-export');
       });
 
       test('The event is composed', function() {
@@ -418,19 +425,14 @@
         assert.isTrue(e.cancelable);
       });
 
-      test('The event has destination', function() {
+      test('The event has options.provider', function() {
         const e = element._dispatchExport(dest);
-        assert.equal(e.detail.destination, dest);
+        assert.equal(e.detail.options.provider, dest);
       });
 
-      test('The event has file', function() {
+      test('The event has options.file', function() {
         const e = element._dispatchExport(dest);
-        assert.equal(e.detail.file, 'arc-host-rules.json');
-      });
-
-      test('The event has type', function() {
-        const e = element._dispatchExport(dest);
-        assert.equal(e.detail.type, 'arc-export');
+        assert.equal(e.detail.options.file, 'arc-host-rules.json');
       });
 
       test('The event has data', function() {

@@ -5,30 +5,18 @@
  *   https://github.com/Polymer/tools/tree/master/packages/gen-typescript-declarations
  *
  * To modify these typings, edit the source file(s):
- *   host-rules-editor.html
+ *   host-rules-editor.js
  */
 
 
 // tslint:disable:variable-name Describing an API that's defined elsewhere.
 // tslint:disable:no-any describes the API as best we are able today
 
-/// <reference path="../polymer/types/polymer-element.d.ts" />
-/// <reference path="../iron-flex-layout/iron-flex-layout.d.ts" />
-/// <reference path="../paper-button/paper-button.d.ts" />
-/// <reference path="../arc-icons/arc-icons.d.ts" />
-/// <reference path="../paper-menu-button/paper-menu-button.d.ts" />
-/// <reference path="../paper-icon-button/paper-icon-button.d.ts" />
-/// <reference path="../paper-listbox/paper-listbox.d.ts" />
-/// <reference path="../paper-item/paper-icon-item.d.ts" />
-/// <reference path="../paper-progress/paper-progress.d.ts" />
-/// <reference path="../paper-toast/paper-toast.d.ts" />
-/// <reference path="../paper-dialog/paper-dialog.d.ts" />
-/// <reference path="../tutorial-toast/tutorial-toast.d.ts" />
-/// <reference path="../paper-fab/paper-fab.d.ts" />
-/// <reference path="../uuid-generator/uuid-generator.d.ts" />
-/// <reference path="../iron-collapse/iron-collapse.d.ts" />
-/// <reference path="host-rules-editor-item.d.ts" />
-/// <reference path="host-rules-tester.d.ts" />
+import {PolymerElement} from '@polymer/polymer/polymer-element.js';
+
+import {html} from '@polymer/polymer/lib/utils/html-tag.js';
+
+import {afterNextRender} from '@polymer/polymer/lib/utils/render-status.js';
 
 declare namespace UiElements {
 
@@ -94,7 +82,7 @@ declare namespace UiElements {
    * `--host-rules-editor-item-comment-input-narrow` | Mixin applied to the comment textarea input in narrow view | `{}`
    * `--host-rules-editor-tutorial-toast` | Mixin applied to the tutorial toast element | `{}`
    */
-  class HostRulesEditor extends Polymer.Element {
+  class HostRulesEditor extends PolymerElement {
 
     /**
      * List of saved items restored from the datastore.
@@ -128,6 +116,11 @@ declare namespace UiElements {
      */
     rulesTesterOpened: boolean|null|undefined;
     _tutorialAllowed: boolean|null|undefined;
+
+    /**
+     * When set it won't ask the model for data when connected to the DOM.
+     */
+    noAuto: boolean|null|undefined;
     connectedCallback(): void;
     disconnectedCallback(): void;
 
@@ -151,6 +144,7 @@ declare namespace UiElements {
      * Computes and sets value for `hasItems` property
      */
     _itemsChanged(value: any): void;
+    _closeMainMenu(): void;
 
     /**
      * Handler for export all to file menu click
@@ -163,11 +157,12 @@ declare namespace UiElements {
     _onExportAllDrive(): void;
 
     /**
-     * Dispatches `export-data` custom event.
+     * Dispatches `arc-data-export` custom event.
      *
      * @param destination File storage destination.
      */
     _sendExport(destination: String|null): void;
+    _dispatchExport(destination: any): any;
 
     /**
      * Appends empty rule to the rules list.
@@ -200,7 +195,7 @@ declare namespace UiElements {
      * this function.
      */
     toggleRulesTester(): void;
-    _onLearnMore(): void;
+    _onLearnMore(): any;
     _deleteAll(): void;
 
     /**
@@ -218,6 +213,9 @@ declare namespace UiElements {
   }
 }
 
-interface HTMLElementTagNameMap {
-  "host-rules-editor": UiElements.HostRulesEditor;
+declare global {
+
+  interface HTMLElementTagNameMap {
+    "host-rules-editor": UiElements.HostRulesEditor;
+  }
 }
