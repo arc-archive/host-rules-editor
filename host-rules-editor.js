@@ -11,25 +11,25 @@ WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
 License for the specific language governing permissions and limitations under
 the License.
 */
-import {PolymerElement} from '@polymer/polymer/polymer-element.js';
-import '@polymer/iron-flex-layout/iron-flex-layout.js';
-import '@polymer/paper-button/paper-button.js';
-import '@advanced-rest-client/arc-icons/arc-icons.js';
-import '@polymer/paper-menu-button/paper-menu-button.js';
-import '@polymer/paper-icon-button/paper-icon-button.js';
-import '@polymer/paper-listbox/paper-listbox.js';
-import '@polymer/paper-item/paper-icon-item.js';
-import '@polymer/paper-progress/paper-progress.js';
-import '@polymer/paper-toast/paper-toast.js';
-import '@polymer/paper-dialog/paper-dialog.js';
-import '@advanced-rest-client/tutorial-toast/tutorial-toast.js';
-import '@polymer/paper-fab/paper-fab.js';
-import '@advanced-rest-client/uuid-generator/uuid-generator.js';
-import '@polymer/iron-collapse/iron-collapse.js';
+import {PolymerElement} from '../../@polymer/polymer/polymer-element.js';
+import '../../@polymer/iron-flex-layout/iron-flex-layout.js';
+import '../../@polymer/paper-button/paper-button.js';
+import '../../@advanced-rest-client/arc-icons/arc-icons.js';
+import '../../@polymer/paper-menu-button/paper-menu-button.js';
+import '../../@polymer/paper-icon-button/paper-icon-button.js';
+import '../../@polymer/paper-listbox/paper-listbox.js';
+import '../../@polymer/paper-item/paper-icon-item.js';
+import '../../@polymer/paper-progress/paper-progress.js';
+import '../../@polymer/paper-toast/paper-toast.js';
+import '../../@polymer/paper-dialog/paper-dialog.js';
+import '../../@advanced-rest-client/tutorial-toast/tutorial-toast.js';
+import '../../@polymer/paper-fab/paper-fab.js';
+import '../../@advanced-rest-client/uuid-generator/uuid-generator.js';
+import '../../@polymer/iron-collapse/iron-collapse.js';
 import './host-rules-editor-item.js';
 import './host-rules-tester.js';
-import {html} from '@polymer/polymer/lib/utils/html-tag.js';
-import {afterNextRender} from '@polymer/polymer/lib/utils/render-status.js';
+import {html} from '../../@polymer/polymer/lib/utils/html-tag.js';
+import {afterNextRender} from '../../@polymer/polymer/lib/utils/render-status.js';
 /**
  * An element to render host rules mapping editor.
  *

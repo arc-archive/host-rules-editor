@@ -11,15 +11,15 @@ WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
 License for the specific language governing permissions and limitations under
 the License.
 */
-import {PolymerElement} from '@polymer/polymer/polymer-element.js';
-import '@polymer/paper-input/paper-input.js';
-import '@polymer/paper-input/paper-textarea.js';
-import '@polymer/paper-checkbox/paper-checkbox.js';
-import '@polymer/iron-collapse/iron-collapse.js';
-import '@polymer/iron-flex-layout/iron-flex-layout.js';
-import '@polymer/paper-icon-button/paper-icon-button.js';
-import '@advanced-rest-client/arc-icons/arc-icons.js';
-import {html} from '@polymer/polymer/lib/utils/html-tag.js';
+import {PolymerElement} from '../../@polymer/polymer/polymer-element.js';
+import '../../@polymer/paper-input/paper-input.js';
+import '../../@polymer/paper-input/paper-textarea.js';
+import '../../@polymer/paper-checkbox/paper-checkbox.js';
+import '../../@polymer/iron-collapse/iron-collapse.js';
+import '../../@polymer/iron-flex-layout/iron-flex-layout.js';
+import '../../@polymer/paper-icon-button/paper-icon-button.js';
+import '../../@advanced-rest-client/arc-icons/arc-icons.js';
+import {html} from '../../@polymer/polymer/lib/utils/html-tag.js';
 /**
  * Editor rule item editor.
  *

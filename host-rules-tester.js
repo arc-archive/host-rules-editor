@@ -11,11 +11,11 @@ WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
 License for the specific language governing permissions and limitations under
 the License.
 */
-import {PolymerElement} from '@polymer/polymer/polymer-element.js';
-import '@polymer/paper-input/paper-input.js';
-import '@polymer/iron-flex-layout/iron-flex-layout.js';
-import '@polymer/paper-button/paper-button.js';
-import {html} from '@polymer/polymer/lib/utils/html-tag.js';
+import {PolymerElement} from '../../@polymer/polymer/polymer-element.js';
+import '../../@polymer/paper-input/paper-input.js';
+import '../../@polymer/iron-flex-layout/iron-flex-layout.js';
+import '../../@polymer/paper-button/paper-button.js';
+import {html} from '../../@polymer/polymer/lib/utils/html-tag.js';
 /**
  * An element that tests user input agains provided host rules.
  *
