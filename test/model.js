@@ -1,5 +1,5 @@
 let lastId = 1;
-const HostModel = {
+export const HostModel = {
   fire: function(type, detail) {
     const ev = new CustomEvent(type, {
       detail: detail,
@@ -57,4 +57,3 @@ const HostModel = {
     });
   }
 };
-HostModel.register();
