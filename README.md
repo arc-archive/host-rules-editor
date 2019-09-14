@@ -6,16 +6,15 @@
 
 ## &lt;host-rules-editor&gt;
 
-An element to render host rules mapping
+An element to render host rules mapping.
 
+### Host rules
 
-```html
-<host-rules-editor></host-rules-editor>
-```
+ARC's host rules allows to create internal mapping for the request engine to alter the connection URI keeping original `Host` header.
+This allows to tests virtual hosts configuration on the server.
 
-### API components
-
-This components is a part of [API components ecosystem](https://elements.advancedrestclient.com/)
+When a request is made the rules are evaluated one after another to produce final request URL. This allows to define multiple rules that works on a previous evaluated URL.
+Lear more about host rules in [ARC's wiki](https://github.com/advanced-rest-client/arc-electron/wiki/Host-rules).
 
 ## Usage
 
@@ -24,58 +23,44 @@ This components is a part of [API components ecosystem](https://elements.advance
 npm install --save @advanced-rest-client/host-rules-editor
 ```
 
-### In an html file
-
-```html
-<html>
-  <head>
-    <script type="module">
-      import '@advanced-rest-client/host-rules-editor/host-rules-editor.js';
-    </script>
-  </head>
-  <body>
-    <host-rules-editor></host-rules-editor>
-  </body>
-</html>
-```
-
-### In a Polymer 3 element
+### In a LitElement
 
 ```js
-import {PolymerElement, html} from '@polymer/polymer';
+import { LitElement, html } from 'lit-element';
 import '@advanced-rest-client/host-rules-editor/host-rules-editor.js';
+import '@advanced-rest-client/arc-models/host-rules-model.js';
 
-class SampleElement extends PolymerElement {
-  static get template() {
+class SampleElement extends LitElement {
+  render() {
     return html`
+    <host-rules-model></host-rules-model>
     <host-rules-editor></host-rules-editor>
     `;
-  }
-
-  _authChanged(e) {
-    console.log(e.detail);
   }
 }
 customElements.define('sample-element', SampleElement);
 ```
 
-### Installation
+## Development
 
 ```sh
 git clone https://github.com/advanced-rest-client/host-rules-editor
-cd api-url-editor
+cd host-rules-editor
 npm install
-npm install -g polymer-cli
 ```
 
 ### Running the demo locally
 
 ```sh
-polymer serve --npm
-open http://127.0.0.1:<port>/demo/
+npm start
 ```
 
 ### Running the tests
+
 ```sh
-polymer test --npm
+npm test
 ```
+
+## API components
+
+This components is a part of [API components ecosystem](https://elements.advancedrestclient.com/)
