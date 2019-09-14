@@ -29,3 +29,7 @@
 
 
 
+# [3.0.0](https://github.com/advanced-rest-client/host-rules-editor/compare/0.1.2...3.0.0) (2019-09-14)
+
+
+
