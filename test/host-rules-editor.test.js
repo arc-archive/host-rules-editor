@@ -15,6 +15,10 @@ describe('<host-rules-editor>', function() {
     return await fixture(html`<host-rules-editor noauto></host-rules-editor>`);
   }
 
+  async function exportEncryptFixture() {
+    return await fixture(html`<host-rules-editor withencrypt></host-rules-editor>`);
+  }
+
   async function dataFixture(items) {
     return await fixture(html`<host-rules-editor
       noauto
@@ -685,6 +689,14 @@ describe('<host-rules-editor>', function() {
       node.dispatchEvent(new CustomEvent('remove-rule'));
       assert.isFalse(spy.called, 'event is not dispatched');
       assert.lengthOf(element.items, 4);
+    });
+  });
+
+  describe('Export encryption', () => {
+    it('Enables encryption option', async () => {
+      const element = await exportEncryptFixture();
+      const node = element.shadowRoot.querySelector('export-options');
+      assert.isTrue(node.withEncrypt);
     });
   });
 });
