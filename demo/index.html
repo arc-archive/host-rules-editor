@@ -5,7 +5,6 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
   <title>ARC cookies manager demo</title>
-  <script src="../node_modules/web-animations-js/web-animations.min.js"></script>
   <style>
   .centered[role="main"] {
     max-width: 1400px;
@@ -16,31 +15,28 @@
   }
 
   body.styled {
-    --anypoiont-dropdown-shaddow: 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12), 0 2px 4px -1px rgba(0, 0, 0, 0.4);
+    --anypoint-dropdown-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12), 0 2px 4px -1px rgba(0, 0, 0, 0.4);
     --primary-color: #00A2DF;
-    --arc-font-body1-font-size: 14px;
-    --arc-font-body1-font-weight: 400;
-    --arc-font-body1-line-height: 20px;
-
-    --arc-font-subhead-font-size: 16px;
-    --arc-font-subhead-font-weight: 400;
-    --arc-font-subhead-line-height: 24px;
-
-    --arc-font-headline-font-size: 24px;
-    --arc-font-headline-font-weight: 400;
-    --arc-font-headline-letter-spacing: -.012em;
-    --arc-font-headline-line-height: 32px;
+    --primary-background-color: #fff;
   }
 
-  pre {
-    white-space: pre-wrap;
-    display: block;
-    word-break: break-all;
+  body.demo.styled.dark header {
+    background-color: #424242;
+  }
+
+  body.demo.styled.dark {
+    background-color: #212121;
+    color: #fff;
+    --primary-color: #ffcc80;
+    --primary-text-color: #fff;
+    --accent-color: #9c27b0;
+    --secondary-text-color: rgba(255, 255, 255, 0.84);
+    --primary-background-color: #212121;
   }
   </style>
 </head>
 
-<body>
+<body class="demo">
   <div id="demo"></div>
   <script type="module" src="index.js"></script>
   </script>

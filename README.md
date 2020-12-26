@@ -1,14 +1,8 @@
-[![Published on NPM](https://img.shields.io/npm/v/@advanced-rest-client/host-rules-editor.svg)](https://www.npmjs.com/package/@advanced-rest-client/host-rules-editor)
+# host-rules-editor
 
-[![Build Status](https://travis-ci.org/advanced-rest-client/host-rules-editor.svg?branch=stage)](https://travis-ci.org/advanced-rest-client/host-rules-editor)
+An element to render a list of host rule mappings.
 
-[![Published on webcomponents.org](https://img.shields.io/badge/webcomponents.org-published-blue.svg)](https://www.webcomponents.org/element/advanced-rest-client/host-rules-editor)
-
-## &lt;host-rules-editor&gt;
-
-An element to render host rules mapping.
-
-### Host rules
+## Host rules
 
 ARC's host rules allows to create internal mapping for the request engine to alter the connection URI keeping original `Host` header.
 This allows to tests virtual hosts configuration on the server.
@@ -19,26 +13,9 @@ Lear more about host rules in [ARC's wiki](https://github.com/advanced-rest-clie
 ## Usage
 
 ### Installation
-```
+
+```sh
 npm install --save @advanced-rest-client/host-rules-editor
-```
-
-### In a LitElement
-
-```js
-import { LitElement, html } from 'lit-element';
-import '@advanced-rest-client/host-rules-editor/host-rules-editor.js';
-import '@advanced-rest-client/arc-models/host-rules-model.js';
-
-class SampleElement extends LitElement {
-  render() {
-    return html`
-    <host-rules-model></host-rules-model>
-    <host-rules-editor></host-rules-editor>
-    `;
-  }
-}
-customElements.define('sample-element', SampleElement);
 ```
 
 ## Development
@@ -60,7 +37,3 @@ npm start
 ```sh
 npm test
 ```
-
-## API components
-
-This components is a part of [API components ecosystem](https://elements.advancedrestclient.com/)
