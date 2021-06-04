@@ -1,14 +1,20 @@
 import { fixture, assert, html } from '@open-wc/testing';
 import * as MockInteractions from '@polymer/iron-test-helpers/mock-interactions.js';
+import { resultValue, evaluate } from '../src/HostRulesTesterElement.js';
 import '../host-rules-tester.js';
 
-describe('<host-rules-tester>', function() {
+/** @typedef {import('../index').HostRulesTesterElement} HostRulesTesterElement */
+
+describe('HostRulesTesterElement', () => {
+  /**
+   * @return {Promise<HostRulesTesterElement>} 
+   */
   async function basicFixture() {
-    return await fixture(html`<host-rules-tester></host-rules-tester>`);
+    return fixture(html`<host-rules-tester></host-rules-tester>`);
   }
 
   describe('basics', () => {
-    let element;
+    let element = /** @type HostRulesTesterElement */ (null);
     beforeEach(async () => {
       element = await basicFixture();
     });
@@ -21,36 +27,38 @@ describe('<host-rules-tester>', function() {
     it('sets URL when input value change', () => {
       const input  = element.shadowRoot.querySelector('anypoint-input');
       input.value = 'https://domain.com';
+      input.dispatchEvent(new Event('input'));
       assert.equal(element.url, input.value);
     });
 
-    it('Sets error when rules are not set', function() {
+    it('Sets error when rules are not set', () => {
       element.testUrl();
-      assert.equal(element._result, 'Define rules first.');
+      assert.equal(element[resultValue], 'Define rules first.');
     });
 
-    it('Sets error when url is not set', function() {
+    it('Sets error when url is not set', () => {
       element.rules = rules;
       element.testUrl();
-      assert.equal(element._result, 'Define the URL first.');
+      assert.equal(element[resultValue], 'Define the URL first.');
     });
 
-    it('Evaluates the rules', function() {
+    it('Evaluates the rules', () => {
       element.rules = rules;
       element.url = 'domain.com/test';
       element.testUrl();
-      assert.equal(element._result, 'localhost/test');
+      assert.equal(element[resultValue], 'localhost/test');
     });
 
     it('evaluates the rule on enter', () => {
       const input  = element.shadowRoot.querySelector('anypoint-input');
-      MockInteractions.keyDownOn(input, 13, [], 'Enter');
-      assert.equal(element._result, 'Define rules first.');
+      // @ts-ignore
+      MockInteractions.keyDownOn(input, 'Enter', [], 'Enter');
+      assert.equal(element[resultValue], 'Define rules first.');
     });
   });
 
-  describe('_evaluate()', () => {
-    let element;
+  describe('[evaluate]()', () => {
+    let element = /** @type HostRulesTesterElement */ (null);
     beforeEach(async () => {
       element = await basicFixture();
     });
@@ -72,21 +80,21 @@ describe('<host-rules-tester>', function() {
     it('evaluates a rule', () => {
       element.url = 'https://domain.com/path';
       element.rules = rules;
-      const result = element._evaluate();
+      const result = element[evaluate]();
       assert.equal(result, 'https://localhost/path');
     });
 
     it('ignores disabled rules', () => {
       element.url = 'https://other.com/path';
       element.rules = rules;
-      const result = element._evaluate();
+      const result = element[evaluate]();
       assert.equal(result, 'https://other.com/path');
     });
 
     it('ignores rules without "from" value', () => {
       element.url = '';
       element.rules = rules;
-      const result = element._evaluate();
+      const result = element[evaluate]();
       assert.equal(result, '');
     });
 
@@ -99,7 +107,7 @@ describe('<host-rules-tester>', function() {
       });
       element.url = 'https://domain.com/path';
       element.rules = items;
-      const result = element._evaluate();
+      const result = element[evaluate]();
       assert.equal(result, 'https://192.168.1.1/path');
     });
   });

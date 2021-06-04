@@ -1,0 +1,152 @@
+{
+  "version": "experimental",
+  "tags": [
+    {
+      "name": "host-rules-editor",
+      "path": "./host-rules-editor.js",
+      "description": "An element to render host rules mapping editor.\n\nHost rules mapping allow ARC to redirect connection from one URI to another\nwithout changing the `host` header value. This element allows to enter mapping\nrules and to test them against arbitrary URL.\n\nNOTE: This element does not provide data storing interface. Instead of operating\non a data store it sends custom events that should be handled by the hosting\napplication. Example interface is included in `arc-models/host-rules-model` element.\n\nNOTE: This element works with `arc-data-export` element to export data to a file.\nYou can use other way to handle `export-user-data` custom event to export host\nrules data.\n\n### Example\n\n```\n<arc-data-export></arc-data-export>\n<host-rules-model></host-rules-model>\n<host-rules-editor></host-rules-editor>\n```\n\n### Data model\n\nThe `items` property accepts an array of the following objects:\n\n```javascript\n{\n    from: String, // The from rule (may contain asterisks)\n    to: String, // replacement value\n    enabled: Boolean, // if false the rule is ignored\n    comment: String // optional rule description\n}\n```",
+      "attributes": [
+        {
+          "name": "loading",
+          "description": "True when loading data from the datastore.",
+          "type": "boolean"
+        },
+        {
+          "name": "rulesTesterOpened",
+          "description": "If true the rules tester is visible.",
+          "type": "boolean"
+        },
+        {
+          "name": "noAuto",
+          "description": "When set it won't ask the model for data when connected to the DOM.",
+          "type": "boolean"
+        },
+        {
+          "name": "compatibility",
+          "description": "Enables compatibility with Anypoint platform",
+          "type": "boolean"
+        },
+        {
+          "name": "outlined",
+          "description": "Enables material design outlined theme",
+          "type": "boolean"
+        },
+        {
+          "name": "exportOptionsOpened",
+          "description": "Indicates that the export options panel is currently rendered.",
+          "type": "boolean"
+        },
+        {
+          "name": "readOnly",
+          "description": "When set it renders the editor in read only mode.",
+          "type": "boolean"
+        }
+      ],
+      "properties": [
+        {
+          "name": "items",
+          "description": "List of saved items restored from the datastore.",
+          "type": "ARCHostRule[] | undefined"
+        },
+        {
+          "name": "loading",
+          "attribute": "loading",
+          "description": "True when loading data from the datastore.",
+          "type": "boolean"
+        },
+        {
+          "name": "rulesTesterOpened",
+          "attribute": "rulesTesterOpened",
+          "description": "If true the rules tester is visible.",
+          "type": "boolean"
+        },
+        {
+          "name": "noAuto",
+          "attribute": "noAuto",
+          "description": "When set it won't ask the model for data when connected to the DOM.",
+          "type": "boolean"
+        },
+        {
+          "name": "compatibility",
+          "attribute": "compatibility",
+          "description": "Enables compatibility with Anypoint platform",
+          "type": "boolean"
+        },
+        {
+          "name": "outlined",
+          "attribute": "outlined",
+          "description": "Enables material design outlined theme",
+          "type": "boolean"
+        },
+        {
+          "name": "exportOptionsOpened",
+          "attribute": "exportOptionsOpened",
+          "description": "Indicates that the export options panel is currently rendered.",
+          "type": "boolean"
+        },
+        {
+          "name": "readOnly",
+          "attribute": "readOnly",
+          "description": "When set it renders the editor in read only mode.",
+          "type": "boolean"
+        },
+        {
+          "name": "hasItems",
+          "type": "boolean"
+        },
+        {
+          "name": "dataUnavailable",
+          "description": "Computed flag that determines that the query to the data store\nhas been performed and empty result was returned.",
+          "type": "boolean"
+        }
+      ]
+    },
+    {
+      "name": "host-rules-tester",
+      "path": "./host-rules-tester.js",
+      "description": "An element that tests user input against provided host rules.\n\nThe host rules is a model received from `host-rules-editor`. However,\nit can be any object that contains `from` and `to` properties.\n\nIt evaluates user entered URL against provided rules and displays the\nresult of the computation.",
+      "attributes": [
+        {
+          "name": "url",
+          "description": "Provided by the user URL",
+          "type": "string"
+        },
+        {
+          "name": "compatibility",
+          "description": "Enables compatibility with Anypoint platform",
+          "type": "boolean"
+        },
+        {
+          "name": "outlined",
+          "description": "Enables material design outlined theme",
+          "type": "boolean"
+        }
+      ],
+      "properties": [
+        {
+          "name": "url",
+          "attribute": "url",
+          "description": "Provided by the user URL",
+          "type": "string"
+        },
+        {
+          "name": "rules",
+          "description": "List of rules to use to evaluate the URL",
+          "type": "ARCHostRule[] | undefined"
+        },
+        {
+          "name": "compatibility",
+          "attribute": "compatibility",
+          "description": "Enables compatibility with Anypoint platform",
+          "type": "boolean"
+        },
+        {
+          "name": "outlined",
+          "attribute": "outlined",
+          "description": "Enables material design outlined theme",
+          "type": "boolean"
+        }
+      ]
+    }
+  ]
+}
