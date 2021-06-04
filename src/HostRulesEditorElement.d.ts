@@ -1,7 +1,7 @@
 import { CSSResult, LitElement, TemplateResult } from 'lit-element';
 import { HostRule } from '@advanced-rest-client/arc-types';
 import { ExportOptions, ProviderOptions } from '@advanced-rest-client/arc-types/src/dataexport/DataExport';
-import { ARCHostRuleDeletedEvent, ARCHostRuleUpdatedEvent, ARCModelStateDeleteEvent } from '@advanced-rest-client/arc-models';
+import { ARCHostRuleDeletedEvent, ARCHostRuleUpdatedEvent, ARCModelStateDeleteEvent } from '@advanced-rest-client/arc-events';
 
 export declare const sheetClosedHandler: unique symbol;
 export declare const acceptExportOptions: unique symbol;

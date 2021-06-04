@@ -1,16 +1,13 @@
-import { ArcModelEvents, ArcModelEventTypes } from '@advanced-rest-client/arc-models';
 import { fixture, assert, html, nextFrame, oneEvent } from '@open-wc/testing';
 import sinon from 'sinon';
 import { DataGenerator } from '@advanced-rest-client/arc-data-generator';
 import '@advanced-rest-client/arc-models/host-rules-model.js';
-// import * as MockInteractions from '@polymer/iron-test-helpers/mock-interactions.js';
-// import { } from '../src/HostRulesEditorElement.js';
-import '../host-rules-editor.js';
 import { aTimeout } from '@advanced-rest-client/arc-models/src/lib/ImportUtils';
-import { DataExportEventTypes } from '@advanced-rest-client/arc-events';
+import { DataExportEventTypes, ArcModelEvents, ArcModelEventTypes } from '@advanced-rest-client/arc-events';
+import '../host-rules-editor.js';
 
 /** @typedef {import('../index').HostRulesEditorElement} HostRulesEditorElement */
-/** @typedef {import('@advanced-rest-client/arc-models').ARCHostRuleUpdatedEvent} ARCHostRuleUpdatedEvent */
+/** @typedef {import('@advanced-rest-client/arc-events').ARCHostRuleUpdatedEvent} ARCHostRuleUpdatedEvent */
 /** @typedef {import('@anypoint-web-components/anypoint-dialog').AnypointDialog} AnypointDialog */
 
 describe('HostRulesEditorElement', () => {

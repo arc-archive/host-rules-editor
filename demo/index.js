@@ -2,13 +2,12 @@ import { html } from 'lit-html';
 import { DemoPage } from '@advanced-rest-client/arc-demo-helper';
 import '@anypoint-web-components/anypoint-button/anypoint-button.js';
 import '@advanced-rest-client/arc-demo-helper/arc-interactive-demo.js';
-import '@advanced-rest-client/arc-ie/arc-data-export.js';
+import '@advanced-rest-client/arc-models/arc-data-export.js';
 import '@advanced-rest-client/arc-models/host-rules-model.js';
 import { DataGenerator } from '@advanced-rest-client/arc-data-generator';
 import listenEncoding from '@advanced-rest-client/arc-demo-helper/src/EncodingHelpers.js';
 import { ExportHandlerMixin } from '@advanced-rest-client/arc-demo-helper/src/ExportHandlerMixin.js';
-import { ImportEvents } from '@advanced-rest-client/arc-events';
-import { ArcModelEvents } from '@advanced-rest-client/arc-models';
+import { ImportEvents, ArcModelEvents } from '@advanced-rest-client/arc-events';
 import '../host-rules-editor.js';
 
 class ComponentDemoPage extends ExportHandlerMixin(DemoPage) {

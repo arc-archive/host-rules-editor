@@ -14,8 +14,7 @@ License for the specific language governing permissions and limitations under
 the License.
 */
 import { LitElement, html } from 'lit-element';
-import { TelemetryEvents, DataImportEventTypes, ExportEvents, ArcNavigationEvents } from '@advanced-rest-client/arc-events';
-import { ArcModelEvents, ArcModelEventTypes } from '@advanced-rest-client/arc-models';
+import { TelemetryEvents, DataImportEventTypes, ExportEvents, ArcNavigationEvents, ArcModelEvents, ArcModelEventTypes } from '@advanced-rest-client/arc-events';
 import { v4 } from '@advanced-rest-client/uuid-generator';
 import '@advanced-rest-client/arc-icons/arc-icon.js';
 import '@anypoint-web-components/anypoint-button/anypoint-button.js';
@@ -27,7 +26,7 @@ import '@anypoint-web-components/anypoint-dialog/anypoint-dialog.js';
 import '@anypoint-web-components/anypoint-input/anypoint-input.js';
 import '@anypoint-web-components/anypoint-collapse/anypoint-collapse.js';
 import '@advanced-rest-client/bottom-sheet/bottom-sheet.js';
-import '@advanced-rest-client/arc-ie/export-options.js';
+import '@advanced-rest-client/arc-models/export-options.js';
 import '@anypoint-web-components/anypoint-switch/anypoint-switch.js'
 import '../host-rules-tester.js';
 import styles from './styles/EditorStyles.js';

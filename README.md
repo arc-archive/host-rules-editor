@@ -2,6 +2,10 @@
 
 An element to render a list of host rule mappings.
 
+[![Published on NPM](https://img.shields.io/npm/v/@advanced-rest-client/host-rules-editor.svg)](https://www.npmjs.com/package/@advanced-rest-client/host-rules-editor)
+
+[![Tests and publishing](https://github.com/advanced-rest-client/host-rules-editor/actions/workflows/deployment.yml/badge.svg)](https://github.com/advanced-rest-client/host-rules-editor/actions/workflows/deployment.yml)
+
 ## Host rules
 
 ARC's host rules allows to create internal mapping for the request engine to alter the connection URI keeping original `Host` header.
