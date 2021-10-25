@@ -1,4 +1,8 @@
-# host-rules-editor
+# Deprecated
+
+This component is deprecated. Use `@advanced-rest-client/app` instead.
+
+-------
 
 An element to render a list of host rule mappings.
 

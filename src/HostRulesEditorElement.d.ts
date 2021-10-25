@@ -70,6 +70,7 @@ export declare const dataDestroyHandler: unique symbol;
  *    comment: String // optional rule description
  * }
  * ```
+ * @deprecated Use `@advanced-rest-client/app` instead.
  */
 export declare class HostRulesEditorElement extends LitElement {
   static get styles(): CSSResult;

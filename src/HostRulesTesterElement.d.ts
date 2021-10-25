@@ -17,6 +17,7 @@ export const resultTemplate: unique symbol;
  *
  * It evaluates user entered URL against provided rules and displays the
  * result of the computation.
+ * @deprecated Use `@advanced-rest-client/app` instead.
  */
 export declare class HostRulesTesterElement extends LitElement {
   static get styles(): CSSResult;
